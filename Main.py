@@ -1,20 +1,9 @@
 import sys
 import math
-# from Point import Point
+from Point import Point
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel, QPushButton
 from PyQt5.QtGui import QMouseEvent, QPainter
-
-
-class Point(object):
-    def __init__(self, xParam=0.0, yParam=0.0):
-        self.x = xParam
-        self.y = yParam
-
-    def distance(self, pt):
-        xDiff = self.x - pt.x
-        yDiff = self.y - pt.y
-        return math.sqrt(xDiff ** 2 + yDiff ** 2)
 
 
 class Example(QWidget):
