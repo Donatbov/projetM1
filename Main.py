@@ -1,8 +1,20 @@
 import sys
 import math
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel
+# from Point import Point
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel, QPushButton
 from PyQt5.QtGui import QMouseEvent, QPainter
+
+
+class Point(object):
+    def __init__(self, xParam=0.0, yParam=0.0):
+        self.x = xParam
+        self.y = yParam
+
+    def distance(self, pt):
+        xDiff = self.x - pt.x
+        yDiff = self.y - pt.y
+        return math.sqrt(xDiff ** 2 + yDiff ** 2)
 
 
 class Example(QWidget):
@@ -10,24 +22,30 @@ class Example(QWidget):
     def __init__(self):
         super().__init__()
 
-        QPoint
         x = 0
         y = 0
         self.nbGraphe = 0  # c'est le nombre de graphes
         self.isNewGraph = False  # sert à determiner si on commence un nouveau graphe ou non
         self.listeLargages = [[]]  # liste contenant les graphes des largages
         self.text = "x: {0},  y: {1}".format(x, y)  # le texte qui va aller dans le label
-        self.labelPositionCurseur = QLabel(self.text, self)    # le label dans lequel on affiche le texte
-        self.pos = None     # position du curseur (contient un champ x et un champ y)
+        self.labelPositionCurseur = QLabel(self.text, self)  # le label dans lequel on affiche le texte
+        self.pos = None  # position du curseur (contient un champ x et un champ y)
+        self.redb = QPushButton('Red', self)
 
         self.initUI()
 
     def initUI(self):
-        grid = QGridLayout()    # notre espace de jeu
+        grid = QGridLayout()  # notre espace de jeu
         grid.addWidget(self.labelPositionCurseur, 0, 0, Qt.AlignTop)
+
+        grid.addWidget(self.redb)
+        self.redb.setCheckable(True)
+        # self.redb.move(10, 10)
+        self.redb.clicked[bool].connect(self.paint_line)
+
         self.setMouseTracking(True)
         self.setLayout(grid)
-        self.setGeometry(200, 100, 1000, 600)   # taille par défautt de la fenetre
+        self.setGeometry(200, 100, 1000, 600)  # taille par défautt de la fenetre
         self.setWindowTitle('Zhang Lei')
         self.show()
 
@@ -37,7 +55,7 @@ class Example(QWidget):
         if self.isNewGraph:
             x = e.x()
             y = e.y()
-            text = "x: {0},  y: {1}".format(x, y)
+            text = "x: {0},  y: {1}".format(e.x(), e.y())
             self.labelPositionCurseur.setText(text)
             self.update()
 
@@ -51,13 +69,13 @@ class Example(QWidget):
             self.isNewGraph = True
             text = "click"
             self.labelPositionCurseur.setText(text)
-            a = [event.x(), event.y()]
-            self.listeLargages[self.nbGraphe - 1].append(a)
+            b = Point(event.x(), event.y())
+            self.listeLargages[self.nbGraphe - 1].append(b)
         elif event.button() == Qt.RightButton:
             self.isNewGraph = False
             text = "fini"
             self.labelPositionCurseur.setText(text)
-            self.update()   # sert a invoquer paintEvent pour effacer le segment en cours
+            self.update()  # sert a invoquer paintEvent pour effacer le segment en cours
 
     # fonction qui réagit à l'évènement : raffraichisssement de la fenetre
     def paintEvent(self, event):
@@ -65,29 +83,24 @@ class Example(QWidget):
         if self.nbGraphe >= 2:
             for i in range(0, self.nbGraphe - 1):
                 for j in range(1, len(self.listeLargages[i])):
-                    self.trace_segment_typo_circle(self.listeLargages[i][j - 1][0],
-                                                   self.listeLargages[i][j - 1][1],
-                                                   self.listeLargages[i][j][0],
-                                                   self.listeLargages[i][j][1])
+                    self.trace_segment_typo_circle(self.listeLargages[i][j - 1],
+                                                   self.listeLargages[i][j])
 
-        # le graphe courant           
+        # le graphe courant
         if len(self.listeLargages[self.nbGraphe - 1]) >= 0:
             for i in range(1, len(self.listeLargages[self.nbGraphe - 1])):
-                self.trace_segment_typo_circle(self.listeLargages[self.nbGraphe - 1][i - 1][0],
-                                               self.listeLargages[self.nbGraphe - 1][i - 1][1],
-                                               self.listeLargages[self.nbGraphe - 1][i][0],
-                                               self.listeLargages[self.nbGraphe - 1][i][1])
+                self.trace_segment_typo_circle(self.listeLargages[self.nbGraphe - 1][i - 1],
+                                               self.listeLargages[self.nbGraphe - 1][i])
 
         # Si on a au moins un point dans notre listeLargages de points alors on trace un segment entre le dernier
         # point placé et le curseur pour prévisualiser le tracé
         if self.isNewGraph:
             if len(self.listeLargages[self.nbGraphe - 1]) >= 1:
-                self.trace_segment_typo_circle(self.pos.x(),
-                                               self.pos.y(),
-                                               self.listeLargages[self.nbGraphe - 1][len(self.listeLargages[self.nbGraphe]) - 1][0],
-                                               self.listeLargages[self.nbGraphe - 1][len(self.listeLargages[self.nbGraphe]) - 1][1])
+                ptmp = Point(self.pos.x(), self.pos.y())
+                self.trace_segment_typo_circle(ptmp, self.listeLargages[self.nbGraphe - 1][
+                    len(self.listeLargages[self.nbGraphe]) - 1])
 
-    def trace_segment_typo_circle(self, x1, y1, x2, y2):
+    def trace_segment_typo_circle(self, p1, p2):
         '''
         prend en parametre deux points et le contexte et trace une ligne entre les deux
         avec la typo: cercle
@@ -101,13 +114,13 @@ class Example(QWidget):
         q = QPainter(self)
 
         # LARGEUR du segmet dessiné
-        largeur = x2 - x1
+        largeur = p2.x - p1.x
 
         # HAUTEUR du segment dessiné
-        hauteur = y2 - y1
+        hauteur = p2.y - p1.y
 
         # calcul de la longueur du segment en cours
-        longueur = math.sqrt(largeur ** 2 + hauteur ** 2)
+        longueur = p2.distance(p1)
 
         # Nombre de symboles dessinés sur le segment en cours
         nb_graphe_rond = int(longueur // 8)
@@ -124,7 +137,10 @@ class Example(QWidget):
             #                                       y= y de listeLargages[i] + dy -5
             # on retire 5 à chaque coordonnées pour centrer le cercle qui
             # est inclu dans un carré de 10 de coté
-            q.drawEllipse(x1 + dx - 5, y1 + dy - 5, 10, 10)
+            q.drawEllipse(p1.x + dx - 5, p1.y + dy - 5, 10, 10)
+
+    def paint_line(x, y):
+        print("hello")
 
 
 if __name__ == '__main__':
