@@ -1,9 +1,9 @@
 import sys
 import math
 from Point import Point
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication, QGridLayout, QLabel, QPushButton
-from PyQt5.QtGui import QMouseEvent, QPainter
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QMouseEvent, QPainter, QPixmap, QTransform, QPen
 
 
 class Example(QWidget):
@@ -28,14 +28,10 @@ class Example(QWidget):
         grid.addWidget(self.labelPositionCurseur, 0, 0, Qt.AlignTop)
 
         grid.addWidget(self.redb)
-        self.redb.setCheckable(True)
-        # self.redb.move(10, 10)
-        self.redb.clicked[bool].connect(self.paint_line)
-
         self.setMouseTracking(True)
         self.setLayout(grid)
         self.setGeometry(200, 100, 1000, 600)  # taille par défautt de la fenetre
-        self.setWindowTitle('Zhang Lei')
+        self.setWindowTitle('Interface')
         self.show()
 
     # fonction qui réagit à l'évènement : la souris bouge
@@ -72,21 +68,21 @@ class Example(QWidget):
         if self.nbGraphe >= 2:
             for i in range(0, self.nbGraphe - 1):
                 for j in range(1, len(self.listeLargages[i])):
-                    self.trace_segment_typo_circle(self.listeLargages[i][j - 1],
-                                                   self.listeLargages[i][j])
+                    self.trace_segment_typo_triangle(self.listeLargages[i][j - 1],
+                                                     self.listeLargages[i][j])
 
         # le graphe courant
         if len(self.listeLargages[self.nbGraphe - 1]) >= 0:
             for i in range(1, len(self.listeLargages[self.nbGraphe - 1])):
-                self.trace_segment_typo_circle(self.listeLargages[self.nbGraphe - 1][i - 1],
-                                               self.listeLargages[self.nbGraphe - 1][i])
+                self.trace_segment_typo_triangle(self.listeLargages[self.nbGraphe - 1][i - 1],
+                                                 self.listeLargages[self.nbGraphe - 1][i])
 
         # Si on a au moins un point dans notre listeLargages de points alors on trace un segment entre le dernier
         # point placé et le curseur pour prévisualiser le tracé
         if self.isNewGraph:
             if len(self.listeLargages[self.nbGraphe - 1]) >= 1:
                 ptmp = Point(self.pos.x(), self.pos.y())
-                self.trace_segment_typo_circle(ptmp, self.listeLargages[self.nbGraphe - 1][
+                self.trace_segment_typo_triangle(ptmp, self.listeLargages[self.nbGraphe - 1][
                     len(self.listeLargages[self.nbGraphe]) - 1])
 
     def trace_segment_typo_circle(self, p1, p2):
@@ -128,8 +124,60 @@ class Example(QWidget):
             # est inclu dans un carré de 10 de coté
             q.drawEllipse(p1.x + dx - 5, p1.y + dy - 5, 10, 10)
 
-    def paint_line(x, y):
-        print("hello")
+    def trace_segment_typo_triangle(self, p1, p2):
+        '''
+        prend en parametre deux points et le contexte et trace une ligne entre les deux
+        avec la typo: cercle
+        :param self: self
+        :param x1: abscisse du premier point
+        :param y1: ordonnée du premier point
+        :param x2: abscisse du deuxieme point
+        :param y2: ordonnée du deuxieme point
+        :return: nothing
+        '''
+        q = QPainter(self)
+
+        # LARGEUR du segmet dessiné
+        largeur = p2.x - p1.x
+
+        # HAUTEUR du segment dessiné
+        hauteur = p2.y - p1.y
+
+        # calcul de la longueur du segment en cours
+        longueur = p2.distance(p1)
+
+        # Nombre de symboles dessinés sur le segment en cours
+        nb_pixmap = int(longueur // 25)
+
+        p = QPen(Qt.red)    # On cree un objet painter
+        p.setWidth(5)
+
+        q.setPen(p)
+
+        q.drawLine(p1.x, p1.y, p2.x, p2.y)
+
+        alpha = self.pos.x()
+
+        pixmap = QPixmap("t.png")
+
+        tr = QTransform()
+
+        tr.rotate(alpha)
+
+        pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
+
+        # Dans cette boucle nous dessinons nbGraphe symboles le long du segment
+        for s in range(0, nb_pixmap):
+            # distance en abscisse entre le symbole dessiné et le point listeLargages[i-1]
+            dx = s * (largeur / nb_pixmap)
+
+            # distance en ordonnée entre le symbole dessiné et le point listeLargages[i-1]
+            dy = s * (hauteur / nb_pixmap)
+
+            # on dessine un symbole aux coordonnées x = x de listeLargages[i] + dx
+            #                                       y = y de listeLargages[i] + dy
+            point = QPoint(p1.x + dx, p1.y + dy)
+            q.drawPixmap(point, pixmap)
 
 
 if __name__ == '__main__':
