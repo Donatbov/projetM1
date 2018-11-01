@@ -19,7 +19,7 @@ class Example(QWidget):
         self.text = "x: {0},  y: {1}".format(x, y)  # le texte qui va aller dans le label
         self.labelPositionCurseur = QLabel(self.text, self)  # le label dans lequel on affiche le texte
         self.pos = None  # position du curseur (contient un champ x et un champ y)
-        self.redb = QPushButton('Red', self)
+        self.clearButton = QPushButton('Clear', self)
 
         self.initUI()
 
@@ -27,10 +27,10 @@ class Example(QWidget):
         grid = QGridLayout()  # notre espace de jeu
         grid.addWidget(self.labelPositionCurseur, 0, 0, Qt.AlignTop)
 
-        grid.addWidget(self.redb)
+        grid.addWidget(self.clearButton)
         self.setMouseTracking(True)
         self.setLayout(grid)
-        self.setGeometry(200, 100, 1000, 600)  # taille par défautt de la fenetre
+        self.setGeometry(200, 100, 1000, 600)  # taille par défaut de la fenetre
         self.setWindowTitle('Interface')
         self.show()
 
@@ -61,6 +61,11 @@ class Example(QWidget):
             text = "fini"
             self.labelPositionCurseur.setText(text)
             self.update()  # sert a invoquer paintEvent pour effacer le segment en cours
+    '''
+    def keyPressEvent(self, QKeyEvent):
+        if QKeyEvent == clearButton:
+            self.listeLargages = [[]]
+            self.nbGraphe = 0'''
 
     # fonction qui réagit à l'évènement : raffraichisssement de la fenetre
     def paintEvent(self, event):
@@ -82,18 +87,16 @@ class Example(QWidget):
         if self.isNewGraph:
             if len(self.listeLargages[self.nbGraphe - 1]) >= 1:
                 ptmp = Point(self.pos.x(), self.pos.y())
-                self.trace_segment_typo_triangle(ptmp, self.listeLargages[self.nbGraphe - 1][
-                    len(self.listeLargages[self.nbGraphe]) - 1])
+                self.trace_segment_typo_triangle(self.listeLargages[self.nbGraphe - 1][len(self.listeLargages[self.nbGraphe]) - 1],
+                                                 ptmp)
 
     def trace_segment_typo_circle(self, p1, p2):
         '''
         prend en parametre deux points et le contexte et trace une ligne entre les deux
         avec la typo: cercle
         :param self: self
-        :param x1: abscisse du premier point
-        :param y1: ordonnée du premier point
-        :param x2: abscisse du deuxieme point
-        :param y2: ordonnée du deuxieme point
+        :param p1: coordonées du premier point
+        :param p2: coordonées du deuxieme point
         :return: nothing
         '''
         q = QPainter(self)
@@ -127,12 +130,10 @@ class Example(QWidget):
     def trace_segment_typo_triangle(self, p1, p2):
         '''
         prend en parametre deux points et le contexte et trace une ligne entre les deux
-        avec la typo: cercle
+        avec la typo: triangle (avec l'image t.png)
         :param self: self
-        :param x1: abscisse du premier point
-        :param y1: ordonnée du premier point
-        :param x2: abscisse du deuxieme point
-        :param y2: ordonnée du deuxieme point
+        :param p1: coordonées du premier point
+        :param p2: coordonées du deuxieme point
         :return: nothing
         '''
         q = QPainter(self)
@@ -156,17 +157,20 @@ class Example(QWidget):
 
         q.drawLine(p1.x, p1.y, p2.x, p2.y)
 
-        alpha = self.pos.x()
+        # on determine l'angle de notre ligne par rapport à l'horizontale
+        alpha = angle_ligne_rad(p1, p2)  # retourne l'angle de notre ligne en radian
 
         pixmap = QPixmap("t.png")
 
+        # on déclare une transformation
         tr = QTransform()
+        tr.rotateRadians(-alpha)    # rotate tourne le png dans le sens non trigo autour du pixel (0,0)
+        # tr.translate(pixmap.width()/2, pixmap.height()/2) # not working
 
-        tr.rotate(alpha)
+        # on l'applique à notre pixmap
+        pixmap = pixmap.transformed(tr)
 
-        pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
-
-        # Dans cette boucle nous dessinons nbGraphe symboles le long du segment
+        # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
         for s in range(0, nb_pixmap):
             # distance en abscisse entre le symbole dessiné et le point listeLargages[i-1]
             dx = s * (largeur / nb_pixmap)
@@ -176,8 +180,30 @@ class Example(QWidget):
 
             # on dessine un symbole aux coordonnées x = x de listeLargages[i] + dx
             #                                       y = y de listeLargages[i] + dy
-            point = QPoint(p1.x + dx, p1.y + dy)
+            point = QPoint(p1.x + dx - pixmap.width()/2, p1.y + dy - pixmap.height()/2)
             q.drawPixmap(point, pixmap)
+        # on dessine le dernier pixmap
+        point = QPoint(p2.x - pixmap.width() / 2, p2.y - pixmap.height() / 2)
+        q.drawPixmap(point, pixmap)
+
+def angle_ligne_rad(p1, p2):
+    '''
+    retourne l'angle que forme le segment[p1 p2] par rapport à l'horizontale en radian
+    :param p1: premier point
+    :param p2: deuxieme poit
+    :return:
+    '''
+    teta = 0
+    if p1.x == p2.x:    # si la ligne est verticale
+        if p1.y <= p2.y:
+            teta = math.pi/2
+        else:
+            teta = -math.pi/2
+    elif p1.x > p2.x:   # si on est sur la partie droite du cercle trigonométrique
+        teta = math.atan((-p2.y+p1.y)/(p2.x-p1.x))  # on remarquera ici l'inversion de p2.y et p1.y due au systeme de coordonées inversé en y
+    else:   # si on est sur la partie gauche du cercle trigonométrique
+        teta = math.atan((-p2.y + p1.y) / (p2.x - p1.x)) + math.pi  # on ajoute pi par rapport au calcul précédent
+    return teta
 
 
 if __name__ == '__main__':
