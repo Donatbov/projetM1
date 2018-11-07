@@ -34,14 +34,13 @@ class Example(QWidget):
         self.pos = None     # position du curseur (contient un champ x et un champ y)
         self.typeGraphe = 0
 
-        
-        self.choice                 = QComboBox()
+        self.choice = QComboBox()
         self.choice.addItems(["n", "v", "b", "r"])
-        self.largageButton          = QPushButton('Largage', self)
-        self.lineWithFlashButton    = QPushButton('LineWithFlash', self)
-        self.lineButton             = QPushButton('Line', self)
-        self.lineTriangleButton     = QPushButton('LineTriangle', self)
-        self.curseurButton          = QPushButton('curseur', self)
+        self.largageButton = QPushButton('Largage', self)
+        self.lineWithFlashButton = QPushButton('LineWithFlash', self)
+        self.lineButton = QPushButton('Line', self)
+        self.lineTriangleButton = QPushButton('LineTriangle', self)
+        self.curseurButton = QPushButton('curseur', self)
 
         
         self.initUI()
@@ -52,7 +51,6 @@ class Example(QWidget):
         grid = QGridLayout()    # notre espace de jeu
         self.setLayout(grid)
 
-
         grid.addWidget(self.labelPositionCurseur, 0, 0, Qt.AlignTop)
         grid.addWidget(self.choice, 0, 0, Qt.AlignBottom)
         grid.addWidget(self.largageButton, 0, 1, Qt.AlignBottom)
@@ -60,7 +58,6 @@ class Example(QWidget):
         grid.addWidget(self.lineButton, 0, 3, Qt.AlignBottom)
         grid.addWidget(self.lineTriangleButton, 0, 4, Qt.AlignBottom)
         grid.addWidget(self.curseurButton, 0, 5, Qt.AlignBottom)
-
 
         self.largageButton.clicked[bool].connect(self.set_type_largage)
         self.lineWithFlashButton.clicked[bool].connect(self.set_type_cercle)
@@ -101,6 +98,7 @@ class Example(QWidget):
             self.isNewGraph = False
             text = "fini"
             self.labelPositionCurseur.setText(text)
+            self.update()  # sert a invoquer paintEvent pour effacer le segment en cours
 
 
     def angle_ligne_rad(self, p1, p2):
@@ -140,7 +138,7 @@ class Example(QWidget):
         # Si on a au moins un point dans notre listeLargages de points alors on trace un segment entre le dernier
         # point placé et le curseur pour prévisualiser le tracé
         if self.isNewGraph:
-            p  = ls[len(ls) - 1] # le dernier point du dernier graphe de ce type de graphe
+            p = ls[len(ls) - 1] # le dernier point du dernier graphe de ce type de graphe
             ptmp = Point(self.pos.x(),self.pos.y()) # le curseur
             self.trace_segment(p, ptmp, s)
 
