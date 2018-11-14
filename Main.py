@@ -1,6 +1,7 @@
 import sys
 import math
 from Point import Point
+from Graphe import Graphe
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
