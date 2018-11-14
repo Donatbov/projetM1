@@ -6,7 +6,7 @@ class Largage(object):
 
     def say_hello(self):
         print("hello, this is largage ",end = "\n")
-    
+
     def draw(self, q):
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
