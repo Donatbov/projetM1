@@ -6,9 +6,6 @@ class LargageHR(object):
         self.pointList = []
         self.point_curseur = None
 
-    def say_hello(self):
-        print("hello, this is largage ",end = "\n")
-
     def draw(self, q):
         pen = QPen(Qt.red)
         q.setPen(pen)
