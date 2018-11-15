@@ -17,6 +17,19 @@ class Example(QWidget):
         self.grapheCourrant = None
         self.graphe = Graphe()
         self.type_graphe = 0
+
+        self.choixLargage = QComboBox()
+        self.choixLargage.addItems(["Largage HBE au retardant","Largage HBE en eau", "Largage ABE au retardant", "Largage HBE en eau"])
+        self.attaqueButton = QPushButton('', self)
+        self.envisageButton = QPushButton('', self)
+        self.appuiButton = QPushButton('', self)
+        self.attaqueJEButton = QPushButton('', self)
+        self.attaqueJButton = QPushButton('', self)
+        self.attaquePFEButton = QPushButton('', self)
+        self.attaquePFButton = QPushButton('', self)
+        self.PEPSButton = QPushButton('', self)
+        self.PPSButton = QPushButton('', self)
+
         self.initUI()
 
     def initUI(self):
@@ -27,17 +40,34 @@ class Example(QWidget):
         self.setGeometry(200, 100, 1000, 600)  # taille par défautt de la fenetre
         self.setWindowTitle('Santoline')
 
-        self.choixLargage = QComboBox()
-        self.choixLargage.addItems(["Largage HBE au retardant", "Largage HBE en eau", "Largage ABE au retardant", "Largage HBE en eau"])
-        self.attaqueButton = QPushButton('Attaque', self)
-        self.envisageButton = QPushButton('appui envisagee', self)
-        self.appuiButton = QPushButton('appui', self)
-        self.attaqueJEButton = QPushButton('attaqueJE', self)
-        self.attaqueJButton = QPushButton('attaqueJ', self)
-        self.attaquePFEButton = QPushButton('attaquePFE', self)
-        self.attaquePFButton = QPushButton('attaquePF', self)
-        self.PEPSButton = QPushButton('PEPS', self)
-        self.PPSButton = QPushButton('PPS', self)
+        self.attaqueButton.setStyleSheet("QPushButton{border-image: url(res/attaque.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.envisageButton.setStyleSheet("QPushButton{border-image: url(res/ligneappuiE.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.appuiButton.setStyleSheet("QPushButton{border-image: url(res/ligneappui.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.attaqueJEButton.setStyleSheet("QPushButton{border-image: url(res/Jalonnement.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.attaqueJButton.setStyleSheet("QPushButton{border-image: url(res/Jalonnement.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.attaquePFEButton.setStyleSheet("QPushButton{border-image: url(res/PerceE.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.attaquePFButton.setStyleSheet("QPushButton{border-image: url(res/Perce.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.PEPSButton.setStyleSheet("QPushButton{border-image: url(res/sensible.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+        self.PPSButton.setStyleSheet("QPushButton{border-image: url(res/sensibleE.png)}"
+                                         # "QPushButton:hover{border-image: url(attaque.png)}"
+                                         "QPushButton:pressed{border-image: url(res/VentPenteLogo.png)}")
+
 
         grid.addWidget(self.choixLargage, 0, 0, Qt.AlignBottom)
         grid.addWidget(self.attaqueButton, 0, 1, Qt.AlignBottom)
@@ -89,7 +119,7 @@ class Example(QWidget):
     def set_type_attaqueJE(self, x):
         self.type_graphe = 7
         self.isNewGraph = False
-    
+
     def set_type_attaqueJ(self, x):
         self.type_graphe = 8
         self.isNewGraph = False
@@ -105,11 +135,11 @@ class Example(QWidget):
     def set_type_PEPS(self, x):
         self.type_graphe = 11
         self.isNewGraph = False
-    
+
     def set_type_PPS(self, x):
         self.type_graphe = 12
         self.isNewGraph = False
-        
+
     # fonction qui réagit à l'évènement : la souris bouge
     def mouseMoveEvent(self, e):
         self.pos = e.pos()
