@@ -1,7 +1,7 @@
-from Point import Point
+from src.Point import Point
 from PyQt5.QtCore import * #Qt
 from PyQt5.QtGui import * #QMouseEvent, QPainter
-class AttaqueJ(object):
+class PPS(object):
     def __init__(self):
         self.pointList = []
         self.point_curseur = None

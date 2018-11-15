@@ -1,6 +1,6 @@
 from PyQt5.QtCore import * #Qt
 from PyQt5.QtGui import * #QMouseEvent, QPainter
-from Point import Point
+from src.Point import Point
 class LargageHR(object):
     def __init__(self):
         self.pointList = []

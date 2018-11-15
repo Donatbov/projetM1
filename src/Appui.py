@@ -1,7 +1,7 @@
 import math
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from Point import Point
+from src.Point import Point
 
 
 class Appui(object):

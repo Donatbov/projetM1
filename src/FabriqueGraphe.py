@@ -1,6 +1,6 @@
 
-from Largage import Largage
-from LigneAppui import LigneAppui
+from src.Largage import Largage
+from src.LigneAppui import LigneAppui
 
 
 class FabriqueGraphe(object):

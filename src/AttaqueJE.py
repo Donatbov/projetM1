@@ -1,4 +1,4 @@
-from Point import Point
+from src.Point import Point
 from PyQt5.QtCore import * #Qt
 from PyQt5.QtGui import * #QMouseEvent, QPainter
 class AttaqueJE(object):
