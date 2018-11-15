@@ -1,6 +1,6 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from src import Graphe
+import Graphe
 
 
 class LigneAppui(Graphe.Graphe):

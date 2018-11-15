@@ -1,7 +1,7 @@
 import math
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from src.Point import Point
+from Point import Point
 
 
 class Appui(object):
@@ -64,7 +64,6 @@ class Appui(object):
         tr = QTransform()
         tr.rotateRadians(-alpha)  # rotate tourne le png dans le sens non trigo autour du pixel (0,0)
         tr.translate(pixmap.width() / 2, pixmap.height() / 2)  # not working
-
         # on l'applique à notre pixmap
         pixmap = pixmap.transformed(tr)
 
@@ -82,7 +81,7 @@ class Appui(object):
             q.drawPixmap(point, pixmap)
         # on dessine le dernier pixmap
         point = QPoint(self.point_curseur.x - pixmap.width() / 2, self.point_curseur.y - pixmap.height() / 2)
-
+        # on l'applique à notre pixmap
         q.drawPixmap(point, pixmap)
 
     @staticmethod
