@@ -1,3 +1,5 @@
+from PyQt5.QtCore import * #Qt
+from PyQt5.QtGui import * #QMouseEvent, QPainter
 from Point import Point
 class LargageHR(object):
     def __init__(self):
@@ -8,6 +10,8 @@ class LargageHR(object):
         print("hello, this is largage ",end = "\n")
 
     def draw(self, q):
+        pen = QPen(Qt.red)
+        q.setPen(pen)
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
