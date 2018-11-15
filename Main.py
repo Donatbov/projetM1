@@ -1,6 +1,6 @@
 import sys
-from src.Point import Point
-from src.Graphe import Graphe
+from Point import Point
+from Graphe import Graphe
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -17,8 +17,6 @@ class Example(QWidget):
         self.grapheCourrant = None
         self.graphe = Graphe()
         self.type_graphe = 0
-
-        
         self.initUI()
 
     def initUI(self):
@@ -30,7 +28,7 @@ class Example(QWidget):
         self.setWindowTitle('Santoline')
 
         self.choixLargage = QComboBox()
-        self.choixLargage.addItems(["Largage HBE au retardant","Largage HBE en eau", "Largage ABE au retardant", "Largage HBE en eau"])
+        self.choixLargage.addItems(["Largage HBE au retardant", "Largage HBE en eau", "Largage ABE au retardant", "Largage HBE en eau"])
         self.attaqueButton = QPushButton('Attaque', self)
         self.envisageButton = QPushButton('appui envisagee', self)
         self.appuiButton = QPushButton('appui', self)
@@ -40,7 +38,6 @@ class Example(QWidget):
         self.attaquePFButton = QPushButton('attaquePF', self)
         self.PEPSButton = QPushButton('PEPS', self)
         self.PPSButton = QPushButton('PPS', self)
-
 
         grid.addWidget(self.choixLargage, 0, 0, Qt.AlignBottom)
         grid.addWidget(self.attaqueButton, 0, 1, Qt.AlignBottom)

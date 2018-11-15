@@ -1,14 +1,14 @@
 
-from src.Largage import *
-from src.Attaque import Attaque
-from src.Envisage import Envisage
-from src.Appui import Appui
-from src.AttaqueJE import AttaqueJE
-from src.AttaqueJ import AttaqueJ
-from src.AttaquePFE import AttaquePFE
-from src.AttaquePF import AttaquePF
-from src.PEPS import PEPS
-from src.PPS import PPS
+from Largage import *
+from Attaque import Attaque
+from Envisage import Envisage
+from Appui import Appui
+from AttaqueJE import AttaqueJE
+from AttaqueJ import AttaqueJ
+from AttaquePFE import AttaquePFE
+from AttaquePF import AttaquePF
+from PEPS import PEPS
+from PPS import PPS
 
 class Graphe(object):
 
