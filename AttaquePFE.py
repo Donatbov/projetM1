@@ -12,10 +12,13 @@ class AttaquePFE(object):
     def draw(self, q):
         pen = QPen(Qt.black)
         q.setPen(pen)
+        icon = QPixmap("./res/perceE.png")
+        if(len(self.pointList)>=1):
+            p1 = QPoint(self.pointList[0].x- icon.width() / 2, self.pointList[0].y - icon.height() / 2)
+            q.drawPixmap(p1, icon)
         for i in range(0, len(self.pointList) - 1):
-            p1 = self.pointList[i]
-            p2 = self.pointList[i + 1]
-            q.drawLine(p1.x, p1.y, p2.x, p2.y)
+            p1 = QPoint(self.pointList[i+1].x- icon.width() / 2, self.pointList[i+1].y - icon.height() / 2)
+            q.drawPixmap(p1, icon)
 
-        p = Point(self.pointList[len(self.pointList) - 1].x, self.pointList[len(self.pointList) - 1].y)
-        q.drawLine(p.x, p.y, self.point_curseur.x, self.point_curseur.y)
+        point = QPoint(self.point_curseur.x - icon.width() / 2, self.point_curseur.y - icon.height() / 2)
+        q.drawPixmap(point, icon)

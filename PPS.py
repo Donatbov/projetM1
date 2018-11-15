@@ -7,14 +7,17 @@ class PPS(object):
         self.point_curseur = None
 
     def say_hello(self):
-        print("hello, this is triangle",end = "\n")
+        print("hello, this is triangle", end="\n")
 
     def draw(self, q):
         pen = QPen(Qt.black)
         q.setPen(pen)
         icon = QPixmap("./res/sensible.png")
+        if(len(self.pointList)>=1):
+            p1 = QPoint(self.pointList[0].x- icon.width() / 2, self.pointList[0].y - icon.height() / 2)
+            q.drawPixmap(p1, icon)
         for i in range(0, len(self.pointList) - 1):
-            p1 = QPoint(self.pointList[i+1].x-10, self.pointList[i+1].y-10)
+            p1 = QPoint(self.pointList[i+1].x- icon.width() / 2, self.pointList[i+1].y - icon.height() / 2)
             q.drawPixmap(p1, icon)
 
         point = QPoint(self.point_curseur.x - icon.width() / 2, self.point_curseur.y - icon.height() / 2)
