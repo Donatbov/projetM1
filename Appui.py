@@ -37,6 +37,8 @@ class Appui(object):
 
             # on l'applique à notre pixmap
             pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
+
+            #ici on gère les cas ou le segment est trop petit pour accueillir un triangle
             if (nb_pixmap == 0):
                 cumule += longueur
             else:

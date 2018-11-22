@@ -9,9 +9,10 @@ class AttaqueJ(object):
         self.point_curseur = None
 
     def say_hello(self):
-        print("hello, this is triangle",end = "\n")
+        print("hello, this is jalonnement",end = "\n")
 
     def draw(self, q):
+        cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
@@ -33,6 +34,16 @@ class AttaqueJ(object):
             # on l'applique à notre pixmap
             pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
 
+            # ici on gère les cas ou le segment est trop petit pour accueillir une fleche
+            if (nb_pixmap == 0):
+                cumule += longueur
+            else:
+                cumule = 0
+            if cumule // 40 > 0:
+                point = QPoint(p1.x - pixmap.width() / 2, p1.y - pixmap.height() / 2)
+                cumule = 0
+
+                q.drawPixmap(point, pixmap)
             # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
             for s in range(0, nb_pixmap):
                 # distance en abscisse entre le symbole dessiné et le point listeLargages[i-1]
