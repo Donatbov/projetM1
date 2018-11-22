@@ -30,7 +30,7 @@ class Attaque(object):
         tr = QTransform()
         tr.rotateRadians(-alpha)  # rotate tourne le png dans le sens non trigo autour du pixel (0,0)
         # on l'applique à notre pixmap
-        icon = icon.transformed(tr)
+        icon = icon.transformed(tr, Qt.SmoothTransformation)
         q.drawPixmap(p, icon)
 
 

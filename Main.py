@@ -192,9 +192,6 @@ class Example(QWidget):
     # fonction qui réagit à l'évènement : raffraichisssement de la fenetre
     def paintEvent(self, event):
         q = QPainter(self)
-        svgWidget = QtSvg.QSvgWidget("./res/triangle.svg")
-        svgWidget.setGeometry(50, 50, 50, 50)
-
         for g in self.listeGraphe:
             g.draw(q)
 

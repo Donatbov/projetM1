@@ -7,6 +7,7 @@ from Point import Point
 class AttaqueJ(Graphe):
 
     def draw(self, q):
+        #Accumulateur servant à repartir les symboles sur de très courts segments
         cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]

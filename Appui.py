@@ -11,6 +11,7 @@ class Appui(Graphe):
         methode pour dessiner la ligne d'appui dans la fenetre
         :param q: QPainter
         """
+        #Accumulateur servant à repartir les symboles sur de très courts segments
         cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
