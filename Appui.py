@@ -1,19 +1,16 @@
-import math
+from Graphe import Graphe
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from Point import Point
 
 
-class Appui(object):
-    def __init__(self):
-        self.pointList = []
-        self.point_curseur = None
+class Appui(Graphe):
 
     def draw(self, q):
-        '''
+        """
         methode pour dessiner la ligne d'appui dans la fenetre
         :param q: QPainter
-        '''
+        """
         cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
@@ -99,24 +96,3 @@ class Appui(object):
         # on l'applique à notre pixmap
         q.drawPixmap(point, pixmap)
 
-    @staticmethod
-    def angle_ligne_rad(p1, p2):
-        '''
-        retourne l'angle que forme le segment[p1 p2] par rapport à l'horizontale en radian
-        :param p1: premier point
-        :param p2: deuxieme poit
-        :return: l'angle que forme le segment[p1 p2] par rapport à l'horizontale en radian
-        '''
-        teta = 0
-        if p1.x == p2.x:  # si la ligne est verticale
-            if p1.y <= p2.y:
-                teta = math.pi / 2
-            else:
-                teta = -math.pi / 2
-        elif p1.x > p2.x:  # si on est sur la partie droite du cercle trigonométrique
-            teta = math.atan((-p2.y + p1.y) / (
-                        p2.x - p1.x))  # on remarquera ici l'inversion de p2.y et p1.y due au systeme de coordonées inversé en y
-        else:  # si on est sur la partie gauche du cercle trigonométrique
-            teta = math.atan(
-                (-p2.y + p1.y) / (p2.x - p1.x)) + math.pi  # on ajoute pi par rapport au calcul précédent
-        return teta
