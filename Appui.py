@@ -17,8 +17,8 @@ class Appui(object):
             largeur = p2.x - p1.x
             hauteur = p2.y - p1.y
             longueur = p2.distance(p1)
-            nb_pixmap = int(longueur // 25)
-            p = QPen(Qt.red)  # On cree un objet painter
+            nb_pixmap = int(longueur // 15)
+            p = QPen(Qt.black)  # On cree un objet painter
             p.setWidth(5)
             q.setPen(p)
             q.drawLine(p1.x, p1.y, p2.x, p2.y)
@@ -35,7 +35,7 @@ class Appui(object):
                 cumule += longueur
             else:
                 cumule = 0
-            if cumule // 25 > 0:
+            if cumule // 15 > 0:
                 point = QPoint(p1.x- pixmap.width()/2, p1.y - pixmap.height()/2)
                 cumule = 0
 
@@ -62,8 +62,8 @@ class Appui(object):
         largeur = self.point_curseur.x - dernierPoint.x
         hauteur = self.point_curseur.y - dernierPoint.y
         longueur = self.point_curseur.distance(dernierPoint)
-        nb_pixmap = int(longueur // 25)
-        p = QPen(Qt.red)  # On cree un objet painter
+        nb_pixmap = int(longueur // 15)
+        p = QPen(Qt.black)  # On cree un objet painter
         p.setWidth(5)
         q.setPen(p)
         q.drawLine(dernierPoint.x, dernierPoint.y, self.point_curseur.x, self.point_curseur.y)
