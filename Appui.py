@@ -36,18 +36,18 @@ class Appui(object):
             tr.translate(pixmap.width() / 2, pixmap.height() / 2)  # not working
 
             # on l'applique à notre pixmap
-            pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
+            pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
 
-            #ici on gère les cas ou le segment est trop petit pour accueillir un triangle
-            if (nb_pixmap == 0):
+            # sert à ne pas dessiner de symboles si le segment est trop petit
+            cumule = 0
+            if nb_pixmap == 0:
                 cumule += longueur
             else:
                 cumule = 0
             if cumule // 15 > 0:
-                point = QPoint(p1.x- pixmap.width()/2, p1.y - pixmap.height()/2)
-                cumule = 0
-
+                point = QPoint(p1.x - pixmap.width()/2, p1.y - pixmap.height()/2)
                 q.drawPixmap(point, pixmap)
+
             # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
             for s in range(0, nb_pixmap):
                 # distance en abscisse entre le symbole dessiné et le point listeLargages[i-1]
