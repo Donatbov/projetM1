@@ -14,6 +14,7 @@ class Appui(object):
         methode pour dessiner la ligne d'appui dans la fenetre
         :param q: QPainter
         '''
+        cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
@@ -22,8 +23,8 @@ class Appui(object):
             hauteur = p2.y - p1.y
             longueur = p2.distance(p1)
 
-            nb_pixmap = int(longueur // 25)
-            p = QPen(Qt.red)  # On cree un objet painter
+            nb_pixmap = int(longueur // 15)
+            p = QPen(Qt.black)  # On cree un objet painter
             # On dessine la ligne
             p.setWidth(5)
             q.setPen(p)
@@ -39,7 +40,6 @@ class Appui(object):
             pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
 
             # sert à ne pas dessiner de symboles si le segment est trop petit
-            cumule = 0
             if nb_pixmap == 0:
                 cumule += longueur
             else:
@@ -47,6 +47,7 @@ class Appui(object):
             if cumule // 15 > 0:
                 point = QPoint(p1.x - pixmap.width()/2, p1.y - pixmap.height()/2)
                 q.drawPixmap(point, pixmap)
+                cumule=0
 
             # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
             for s in range(0, nb_pixmap):
@@ -66,7 +67,7 @@ class Appui(object):
         largeur = self.point_curseur.x - dernierPoint.x
         hauteur = self.point_curseur.y - dernierPoint.y
         longueur = self.point_curseur.distance(dernierPoint)
-        nb_pixmap = int(longueur // 25)
+        nb_pixmap = int(longueur // 15)
         # On dessine la ligne
         p = QPen(Qt.black)  # On cree un objet painter
         p.setWidth(5)

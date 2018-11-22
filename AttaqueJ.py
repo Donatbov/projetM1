@@ -1,12 +1,13 @@
-from Point import Point
 from Graphe import Graphe
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+from Point import Point
 
 
 class AttaqueJ(Graphe):
 
-  def draw(self, q):
+    def draw(self, q):
+        cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
@@ -29,7 +30,6 @@ class AttaqueJ(Graphe):
             pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
 
             # ici on gère les cas ou le segment est trop petit pour accueillir une fleche
-            cumule = 0
             if nb_pixmap == 0:
                 cumule += longueur
             else:
@@ -37,6 +37,7 @@ class AttaqueJ(Graphe):
             if cumule // 40 > 0:
                 point = QPoint(p1.x - pixmap.width() / 2, p1.y - pixmap.height() / 2)
                 q.drawPixmap(point, pixmap)
+                cumule=0
 
             # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
             for s in range(0, nb_pixmap):
@@ -86,3 +87,4 @@ class AttaqueJ(Graphe):
         point = QPoint(self.point_curseur.x - pixmap.width() / 2, self.point_curseur.y - pixmap.height() / 2)
         # on l'applique à notre pixmap
         q.drawPixmap(point, pixmap)
+
