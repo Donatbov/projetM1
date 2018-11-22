@@ -1,9 +1,9 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-import Graphe
+import CreationGraphe
 
 
-class LigneAppui(Graphe.Graphe):
+class LigneAppui(CreationGraphe.Graphe):
 
     def __init__(self):
         super().__init__()
