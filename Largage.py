@@ -219,7 +219,7 @@ class LargageAR(Graphe):
         q.drawPixmap(point, pixmap)
 
 
-class LargageAE(object):
+class LargageAE(Graphe):
 
     def draw(self, q):
         """
