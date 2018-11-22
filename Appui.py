@@ -10,15 +10,21 @@ class Appui(object):
         self.point_curseur = None
 
     def draw(self, q):
-        cumule=0
+        '''
+        methode pour dessiner la ligne d'appui dans la fenetre
+        :param q: QPainter
+        '''
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
+
             largeur = p2.x - p1.x
             hauteur = p2.y - p1.y
             longueur = p2.distance(p1)
-            nb_pixmap = int(longueur // 15)
-            p = QPen(Qt.black)  # On cree un objet painter
+
+            nb_pixmap = int(longueur // 25)
+            p = QPen(Qt.red)  # On cree un objet painter
+            # On dessine la ligne
             p.setWidth(5)
             q.setPen(p)
             q.drawLine(p1.x, p1.y, p2.x, p2.y)
@@ -52,17 +58,14 @@ class Appui(object):
                 #                                       y = y de listeLargages[i] + dy
                 point = QPoint(p1.x + dx - pixmap.width() / 2, p1.y + dy - pixmap.height() / 2)
                 q.drawPixmap(point, pixmap)
-            # on dessine le dernier pixmap
-            point = QPoint(p2.x - pixmap.width() / 2, p2.y - pixmap.height() / 2)
-
-            #q.drawPixmap(point, pixmap)
 
         # trace le segment entre le curseur et le dernier point du graphe
         dernierPoint = Point(self.pointList[len(self.pointList) - 1].x, self.pointList[len(self.pointList) - 1].y)
         largeur = self.point_curseur.x - dernierPoint.x
         hauteur = self.point_curseur.y - dernierPoint.y
         longueur = self.point_curseur.distance(dernierPoint)
-        nb_pixmap = int(longueur // 15)
+        nb_pixmap = int(longueur // 25)
+        # On dessine la ligne
         p = QPen(Qt.black)  # On cree un objet painter
         p.setWidth(5)
         q.setPen(p)
