@@ -9,7 +9,7 @@ class LigneAppui(Graphe.Graphe):
         super().__init__()
 
     def draw(self, q):
-        p = QPen(Qt.red)
+        p = QPen(Qt.green)
 
         p.setWidth(5)
 
@@ -36,7 +36,7 @@ class LigneAppui(Graphe.Graphe):
             # calcul de la longueur du segment en cours
             longueur = p2.distance(p1)
 
-            nb_graphe_rond = int(longueur // 25)
+            nb_graphe_rond = int(longueur // 15)
 
             pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
 
@@ -48,5 +48,5 @@ class LigneAppui(Graphe.Graphe):
                 dy = s * (hauteur / nb_graphe_rond)
 
                 point = QPoint(p1.x + dx, p1.y + dy)
-
-                q.drawPixmap(point, pixmap)
+                if s!=nb_graphe_rond:
+                    q.drawPixmap(point, pixmap)

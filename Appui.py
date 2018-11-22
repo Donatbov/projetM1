@@ -29,7 +29,7 @@ class Appui(object):
             tr.translate(pixmap.width() / 2, pixmap.height() / 2)  # not working
 
             # on l'applique à notre pixmap
-            pixmap = pixmap.transformed(tr)
+            pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
 
             # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
             for s in range(0, nb_pixmap):
@@ -65,7 +65,7 @@ class Appui(object):
         tr.rotateRadians(-alpha)  # rotate tourne le png dans le sens non trigo autour du pixel (0,0)
         tr.translate(pixmap.width() / 2, pixmap.height() / 2)  # not working
         # on l'applique à notre pixmap
-        pixmap = pixmap.transformed(tr)
+        pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
 
         # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
         for s in range(0, nb_pixmap):
