@@ -20,7 +20,7 @@ class Example(QWidget):
         self.grapheCourrant = None
         self.graphe = CreationGraphe()
         self.type_graphe = 0
-
+        self.zoomLevel = 1
         self.choixLargage = QComboBox()
         self.choixLargage.addItem(QIcon("res/hretardant.png"), "")
         self.choixLargage.addItem(QIcon("res/heau.png"), "")
@@ -37,6 +37,8 @@ class Example(QWidget):
         self.attaquePFButton = QPushButton('', self)
         self.PEPSButton = QPushButton('', self)
         self.PPSButton = QPushButton('', self)
+
+        self.zoomLevel = 1
 
         self.initUI()
 
@@ -166,7 +168,7 @@ class Example(QWidget):
     def mouseMoveEvent(self, e):
         self.pos = e.pos()
         if self.isNewGraph:
-            self.labelPositionCurseur.setText("x: " + str(e.x()) + " y: " + str(e.y()))
+            self.labelPositionCurseur.setText("x: " + str(e.x()) + " y: " + str(e.y())+" zoom: "+str(self.zoomLevel))
             self.grapheCourrant.point_curseur = Point(e.x(), e.y())
             self.update()
 
@@ -193,7 +195,15 @@ class Example(QWidget):
     def paintEvent(self, event):
         q = QPainter(self)
         for g in self.listeGraphe:
-            g.draw(q)
+            g.draw(q,self.zoomLevel)
+
+    def wheelEvent(self, event):
+
+        self.zoomLevel -= event.angleDelta().y()/1200
+        self.update()
+
+
+
 
     def set_type_largage(self, x):
         self.type_graphe = 0
@@ -202,8 +212,6 @@ class Example(QWidget):
     def set_type_line_triangle(self, x):
         self.type_graphe = 1
         self.isNewGraph = False
-
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -6,7 +6,7 @@ from Point import Point
 
 class Appui(Graphe):
 
-    def draw(self, q):
+    def draw(self, q,zoom):
         """
         methode pour dessiner la ligne d'appui dans la fenetre
         :param q: QPainter
@@ -16,6 +16,10 @@ class Appui(Graphe):
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
+            plop1 = Point(p1.x/zoom, p1.y/zoom)
+            plop2 = Point(p2.x/zoom, p2.y/zoom)
+            p1 = plop1
+            p2= plop2
 
             largeur = p2.x - p1.x
             hauteur = p2.y - p1.y
@@ -35,6 +39,7 @@ class Appui(Graphe):
             tr.translate(pixmap.width() / 2, pixmap.height() / 2)  # not working
 
             # on l'applique à notre pixmap
+
             pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
 
             # sert à ne pas dessiner de symboles si le segment est trop petit
@@ -61,7 +66,7 @@ class Appui(Graphe):
                 q.drawPixmap(point, pixmap)
 
         # trace le segment entre le curseur et le dernier point du graphe
-        dernierPoint = Point(self.pointList[len(self.pointList) - 1].x, self.pointList[len(self.pointList) - 1].y)
+        dernierPoint = Point(self.pointList[len(self.pointList) - 1].x/zoom, self.pointList[len(self.pointList) - 1].y/zoom)
         largeur = self.point_curseur.x - dernierPoint.x
         hauteur = self.point_curseur.y - dernierPoint.y
         longueur = self.point_curseur.distance(dernierPoint)
@@ -90,10 +95,10 @@ class Appui(Graphe):
 
             # on dessine un symbole aux coordonnées x = x de listeLargages[i] + dx
             #                                       y = y de listeLargages[i] + dy
-            point = QPoint(dernierPoint.x + dx - pixmap.width() / 2, dernierPoint.y + dy - pixmap.height() / 2)
+            point = QPoint(dernierPoint.x + dx - pixmap.width() / 2*zoom, dernierPoint.y + dy - pixmap.height() / 2*zoom)
             q.drawPixmap(point, pixmap)
         # on dessine le dernier pixmap
-        point = QPoint(self.point_curseur.x - pixmap.width() / 2, self.point_curseur.y - pixmap.height() / 2)
+        point = QPoint(self.point_curseur.x - pixmap.width() / 2*zoom, self.point_curseur.y - pixmap.height() / 2*zoom)
         # on l'applique à notre pixmap
         q.drawPixmap(point, pixmap)
 
