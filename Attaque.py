@@ -13,7 +13,7 @@ class Attaque(object):
     def say_hello(self):
         print("hello, this is triangle",end = "\n")
 
-    def draw(self, q):
+    def draw(self, q, zoom):
         pen = QPen(Qt.black)
         pen.setWidth(3)
         q.setPen(pen)
