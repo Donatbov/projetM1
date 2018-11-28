@@ -20,7 +20,7 @@ class Example(QWidget):
         self.grapheCourrant = None
         self.graphe = CreationGraphe()
         self.type_graphe = 0
-        self.zoomLevel = 1
+
         self.choixLargage = QComboBox()
         self.choixLargage.addItem(QIcon("res/hretardant.png"), "")
         self.choixLargage.addItem(QIcon("res/heau.png"), "")
@@ -212,6 +212,8 @@ class Example(QWidget):
     def set_type_line_triangle(self, x):
         self.type_graphe = 1
         self.isNewGraph = False
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
