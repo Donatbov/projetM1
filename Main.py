@@ -186,6 +186,7 @@ class Example(QWidget):
             self.grapheCourrant.pointList.append(b)
 
         elif event.button() == Qt.RightButton:
+            self.grapheCourrant.point_curseur = Point(-1, -1)
             self.isNewGraph = False
             text = "fini"
             self.labelPositionCurseur.setText(text)
