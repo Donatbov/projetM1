@@ -6,7 +6,7 @@ from Point import Point
 
 class LargageHR(Graphe):
 
-    def draw(self, q):
+    def draw(self, q, zoom):
         """
         methode pour dessiner le largage HR dans la fenetre
         :param q: QPainter
@@ -73,7 +73,7 @@ class LargageHR(Graphe):
 
 class LargageHE(Graphe):
 
-    def draw(self, q):
+    def draw(self, q, zoom):
         """
         methode pour dessiner le largage HR dans la fenetre
         :param q: QPainter
@@ -140,7 +140,7 @@ class LargageHE(Graphe):
 
 class LargageAR(Graphe):
 
-    def draw(self, q):
+    def draw(self, q, zoom):
         """
         methode pour dessiner le largage HR dans la fenetre
         :param q: QPainter
@@ -202,7 +202,7 @@ class LargageAR(Graphe):
         pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
 
         # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
-        for s in range(0, nb_pixmap):
+        for s in range(0, nb_pixmap, zoom):
             # distance en abscisse entre le symbole dessiné et le point listeLargages[i-1]
             dx = s * (largeur / nb_pixmap)
 
@@ -221,7 +221,7 @@ class LargageAR(Graphe):
 
 class LargageAE(Graphe):
 
-    def draw(self, q):
+    def draw(self, q, zoom):
         """
         methode pour dessiner le largage HR dans la fenetre
         :param q: QPainter

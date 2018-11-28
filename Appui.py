@@ -19,16 +19,16 @@ class Appui(Graphe):
             plop1 = Point(p1.x/zoom, p1.y/zoom)
             plop2 = Point(p2.x/zoom, p2.y/zoom)
             p1 = plop1
-            p2= plop2
+            p2 = plop2
 
             largeur = p2.x - p1.x
             hauteur = p2.y - p1.y
             longueur = p2.distance(p1)
 
-            nb_pixmap = int(longueur // 15)
+            nb_pixmap = int(longueur // (15/zoom))
             p = QPen(Qt.black)  # On cree un objet painter
             # On dessine la ligne
-            p.setWidth(5)
+            p.setWidth(int(5/zoom))
             q.setPen(p)
             q.drawLine(p1.x, p1.y, p2.x, p2.y)
             # on determine l'angle de notre ligne par rapport à l'horizontale
@@ -41,13 +41,14 @@ class Appui(Graphe):
             # on l'applique à notre pixmap
 
             pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
+            pixmap = pixmap.scaledToHeight(int(pixmap.height()/zoom),Qt.SmoothTransformation)
 
             # sert à ne pas dessiner de symboles si le segment est trop petit
             if nb_pixmap == 0:
                 cumule += longueur
             else:
                 cumule = 0
-            if cumule // 15 > 0:
+            if cumule // (15/zoom) > 0:
                 point = QPoint(p1.x - pixmap.width()/2, p1.y - pixmap.height()/2)
                 q.drawPixmap(point, pixmap)
                 cumule=0
@@ -95,10 +96,10 @@ class Appui(Graphe):
 
             # on dessine un symbole aux coordonnées x = x de listeLargages[i] + dx
             #                                       y = y de listeLargages[i] + dy
-            point = QPoint(dernierPoint.x + dx - pixmap.width() / 2*zoom, dernierPoint.y + dy - pixmap.height() / 2*zoom)
+            point = QPoint(dernierPoint.x + dx - pixmap.width() / 2, dernierPoint.y + dy - pixmap.height() / 2)
             q.drawPixmap(point, pixmap)
         # on dessine le dernier pixmap
         point = QPoint(self.point_curseur.x - pixmap.width() / 2*zoom, self.point_curseur.y - pixmap.height() / 2*zoom)
         # on l'applique à notre pixmap
-        q.drawPixmap(point, pixmap)
+        #q.drawPixmap(point, pixmap)
 

@@ -6,18 +6,25 @@ from Point import Point
 
 class AttaqueJ(Graphe):
 
-    def draw(self, q):
+    def draw(self, q,zoom):
         #Accumulateur servant à repartir les symboles sur de très courts segments
         cumule=0
         for i in range(0, len(self.pointList) - 1):
             p1 = self.pointList[i]
             p2 = self.pointList[i + 1]
+            plop1 = Point(p1.x / zoom, p1.y / zoom)
+            plop2 = Point(p2.x / zoom, p2.y / zoom)
+            p1 = plop1
+            p2 = plop2
+
             largeur = p2.x - p1.x
             hauteur = p2.y - p1.y
             longueur = p2.distance(p1)
-            nb_pixmap = int(longueur // 40)
+
+            nb_pixmap = int(longueur // (40 / zoom))
             p = QPen(Qt.black)  # On cree un objet painter
-            p.setWidth(2)
+            # On dessine la ligne
+            p.setWidth(int(2/ zoom))
             q.setPen(p)
             q.drawLine(p1.x, p1.y, p2.x, p2.y)
             # on determine l'angle de notre ligne par rapport à l'horizontale
@@ -28,17 +35,19 @@ class AttaqueJ(Graphe):
             tr.translate(pixmap.width() / 2, pixmap.height() / 2)  # not working
 
             # on l'applique à notre pixmap
-            pixmap = pixmap.transformed(tr,Qt.SmoothTransformation)
 
-            # ici on gère les cas ou le segment est trop petit pour accueillir une fleche
+            pixmap = pixmap.transformed(tr, Qt.SmoothTransformation)
+            pixmap = pixmap.scaledToHeight(int(pixmap.height() / zoom), Qt.SmoothTransformation)
+
+            # sert à ne pas dessiner de symboles si le segment est trop petit
             if nb_pixmap == 0:
                 cumule += longueur
             else:
                 cumule = 0
-            if cumule // 40 > 0:
+            if cumule // (40 / zoom) > 0:
                 point = QPoint(p1.x - pixmap.width() / 2, p1.y - pixmap.height() / 2)
                 q.drawPixmap(point, pixmap)
-                cumule=0
+                cumule = 0
 
             # Dans cette boucle nous dessinons nbPixmap symboles le long du segment
             for s in range(0, nb_pixmap):
